@@ -118,3 +118,6 @@ def test():
     # # 使用原生 Redis 客户端（如果需要）
     # r = redis_client.client
     # r.sadd("users", "user1", "user2")
+
+if __name__ == "__main__":
+    test()

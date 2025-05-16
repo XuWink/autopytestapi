@@ -1,9 +1,10 @@
 import os
-import time
+from datetime import datetime
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from utils.util import get_base_path
 
-BASE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+BASE_PATH = get_base_path()
 # 定义日志文件路径
 LOG_PATH = os.path.join(BASE_PATH, "logs")
 if not os.path.exists(LOG_PATH):
@@ -48,7 +49,9 @@ class Logger:
 
     def _add_file_handler(self):
         # 使用时间轮转文件处理器，每天生成一个新日志文件
-        log_file = os.path.join(self.log_path, "app.log")
+        now = datetime.now()
+        formatted = now.strftime("%Y%m%d")
+        log_file = os.path.join(self.log_path, f"{formatted}.log")
         file_handler = TimedRotatingFileHandler(
             log_file,
             when="midnight",
@@ -73,8 +76,11 @@ class Logger:
 # 全局日志实例
 logger = Logger().get_logger()
 
-if __name__ == '__main__':
+def test():
     logger.info("---测试开始---")
     logger.debug("---测试结束---")
     logger.error("---<UNK>---")
     logger.warning("---<UNK>---")
+
+if __name__ == '__main__':
+    test()

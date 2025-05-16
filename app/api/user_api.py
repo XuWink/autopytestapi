@@ -1,4 +1,3 @@
-from .. import app
 from flask import jsonify, request
 from flask import Blueprint
 

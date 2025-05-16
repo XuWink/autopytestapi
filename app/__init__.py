@@ -1,8 +1,6 @@
 from flask import Flask
 from app.api.user_api import user_bp
 
-app = Flask(__name__)
-
 
 def create_app():
     app = Flask(__name__)

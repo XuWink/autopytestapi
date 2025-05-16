@@ -8,8 +8,8 @@ MYSQL_DB = 'flask_demo'
 # token过期时间（秒）
 EXPIRE_TIME = 600
 
-# MD5加密
-MD5_SALT = 'hello world.'
+# MD5加密盐值
+MD5_SALT = 'hello world!'
 
 # 服务端口
 SERVER_PORT = 9999

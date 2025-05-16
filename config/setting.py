@@ -18,4 +18,5 @@ EXPIRE_TIME = 3600
 MD5_SALT = 'hello world!'
 
 # 服务端口
+SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 9999

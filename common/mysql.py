@@ -6,14 +6,14 @@ from contextlib import contextmanager
 
 
 class MysqlDb:
-    def __init__(self, host, port, user, password, db, charset='utf8mb4', autocommit=True):
+    def __init__(self, host, port, user, password, database, charset='utf8mb4', autocommit=True):
         # 数据库连接配置
         self.config = {
             'host': host,
             'port': port,
             'user': user,
             'password': password,
-            'db': db,
+            'db': database,
             'charset': charset,
             'autocommit': autocommit,
             'cursorclass': DictCursor
@@ -109,13 +109,10 @@ if __name__ == '__main__':
     print(users)
 
     # 插入示例
-    db.execute("INSERT INTO user (username, password, role, sex, telephone, address) VALUES (%s, %s, %s, %s, %s, %s)",\
-               ("Alice", '123456',1,1,'17838346012','河南省郑州市'))
+    db.execute("INSERT INTO user (username, password, role, sex, telephone, address) VALUES (%s, %s, %s, %s, %s, %s)",("Alice", '123456',1,1,'17838346012','河南省郑州市'))
 
     # 批量插入
-    data = [("Alice1", '123456',1,1,'17838346013','河南省郑州市'), \
-            ("Alice2", '123456',1,1,'17838346014','河南省郑州市'), \
-            ("Alice3", '123456',1,1,'17838346015','河南省郑州市')]
+    data = [("Alice1", '123456',1,1,'17838346013','河南省郑州市'), ("Alice2", '123456',1,1,'17838346014','河南省郑州市'), ("Alice3", '123456',1,1,'17838346015','河南省郑州市')]
     db.execute_many("INSERT INTO user (username, password, role, sex, telephone, address) VALUES (%s, %s, %s, %s, %s, %s)", data)
 
     users = db.select("SELECT * FROM user")

@@ -13,10 +13,5 @@ def hello():
 def get_all_users():
     """获取所有用户信息"""
     data = user_event.get_all_users()
-    return jsonify({"code": 0, "data": data, "msg": "查询成功"})
+    return jsonify({"data": data, "msg": "查询成功"})
 
-
-# @user_bp.route("/users", methods=["POST"])
-# def create_new_user():
-#     """<UNK>"""
-#     data = request.get_json()

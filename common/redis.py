@@ -96,6 +96,20 @@ class RedisClient:
         except redis.RedisError as e:
             logger.error(f"Redis 检查键存在失败: {e}")
 
+    def is_key_expired(self, key: str) -> bool:
+        """
+        检查键是否过期
+        
+        :param key: 键名
+        :return: 键是否过期（True表示已过期或不存在，False表示未过期）
+        """
+        try:
+            ttl = self._redis.ttl(key)
+            return ttl == -2 or ttl == -1
+        except redis.RedisError as e:
+            logger.error(f"Redis 检查键过期失败: {e}")
+            return True  # 如果发生错误，假设键已过期或不存在
+
 redis_client = RedisClient(REDIS_HOST, REDIS_PORT, REDIS_PASSWD,  DB_ID, MAX_CONNECTIONS)
 
 

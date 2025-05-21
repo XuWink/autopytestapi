@@ -162,7 +162,7 @@ def generat_fake(count):
     users = generator.generate_users(count=count)
     encrypted_users = [generator.get_encrypted_version(u) for u in users]
     
-    sql = "INSERT INTO user (username, password, sex, telephone, address) VALUES (%s, %s, %s, %s, %s)"
+    sql = "INSERT INTO user (username, password, role, sex, telephone, address) VALUES (%s, %s, %s, %s, %s, %s)"
     try:
         success = db.execute_many(sql,encrypted_users)
         if success:

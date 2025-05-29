@@ -11,15 +11,15 @@ def get_all_users():
     return data
 
 def get_user(username : str):
-    sql = f"""SELECT id, username, password, telephone, role, sex, address FROM user WHERE username=%s""".format(username)
-    data = db.select_one(sql)
+    sql = f"""SELECT id, username, password, telephone, role, sex, address FROM user WHERE username=%s"""
+    data = db.select_one(sql, (username,))
     logger.info("获取 {} 用户信息：{}".format(username, data))
     if data:
         return data
     return None
 
 def select_by_username(username : str):
-    sql = "SELECT id FROM user WHERE username=%s"
+    sql = "SELECT * FROM user WHERE username=%s"
     data = db.select_one(sql, (username,))
     logger.info(f"""select_by_username 获取到用户名：{data}""")
     return data
@@ -45,7 +45,7 @@ def register(username, password, DEFAULT_ROLE, sex, telephone, address):
     return db.execute(sql, (username, password, DEFAULT_ROLE, sex, telephone, address))
 
 
-def login_user(self, username, password):
+def login_user(username, password):
         """登录用户"""
         try:
             # 查询用户
@@ -90,7 +90,7 @@ def update_user(admin_user, token, id, new_password, new_sex, new_telephone, new
     redis_token = redis_client.get_value(admin_user)
     if not redis_token or redis_token != token:
         return False, "token口令不正确或当前用户未登录，请检查！！！"
-    if redis_client.is_key_expired(redis_token):
+    if redis_client.is_key_expired(admin_user):
         return False, "token口令已过期或不存在，请重新登录"
     
     # 获取管理员角色
@@ -130,7 +130,7 @@ def delete_user(admin_user, token, username):
     redis_token = redis_client.get_value(admin_user)
     if not redis_token or redis_token != token:
         return False, "token口令不正确或当前用户未登录，请检查！！！"
-    if redis_client.is_key_expired(redis_token):
+    if redis_client.is_key_expired(admin_user):
         return False, "token口令已过期或不存在，请重新登录"
     
     # 获取管理员角色

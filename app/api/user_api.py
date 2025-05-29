@@ -21,9 +21,10 @@ def get_all_users():
     return jsonify({"data": data, "msg": "成功"}), HTTPStatus.OK
 
 
-@user_bp.route("/users/<string:username>", methods=['GET'])
-def get_user(username):
+@user_bp.route("/user", methods=['GET'])
+def get_user():
     '''获取某个用户的信息'''
+    username = request.args.get("username")
     data = user_event.get_user(username)
     if data:
         return jsonify({"data":data,"msg":"成功"}), HTTPStatus.OK
@@ -35,6 +36,7 @@ def user_register():
     '''用户注册'''
     username = request.json.get("username","").strip()
     password = request.json.get("password", "").strip()
+    role = request.json.get("role", DEFAULT_ROLE).strip()
     sex = request.json.get("sex", "0").strip()  # 默认0(男性)
     telephone = request.json.get("telephone","").strip()
     address = request.json.get("address","").strip()
@@ -56,7 +58,7 @@ def user_register():
         if res2:
             return jsonify({"data":None, "msg": "手机号已被注册"}), HTTPStatus.BAD_REQUEST
         
-        r = user_event.register(username, password, DEFAULT_ROLE, sex, telephone, address)
+        r = user_event.register(username, password, role, sex, telephone, address)
         if r:
             return jsonify({"data":None, "msg": "注册成功！"}), HTTPStatus.OK
         return jsonify({"data": None, "msg": "注册失败"}), HTTPStatus.BAD_REQUEST
@@ -71,6 +73,7 @@ def user_login():
     """登录用户"""
     username = request.values.get("username", "").strip()
     password = request.values.get("password", "").strip()
+    print(f"username:{username}, password:{password}")
 
     if not username or not password:
         return jsonify({"data": None, "msg": "用户名或密码不能为空！！！"}), HTTPStatus.BAD_REQUEST
@@ -83,9 +86,10 @@ def user_login():
 
 
 
-@user_bp.route("/update/user/<int:id>", methods=['PUT'])
-def user_update(id):
+@user_bp.route("/update/user", methods=['PUT'])
+def user_update():
     """修改用户信息"""
+    id = request.json.get("id", "")
     admin_user = request.json.get("admin_user", "").strip()
     token = request.json.get("token", "").strip()
     new_password = request.json.get("password", "").strip()
@@ -100,11 +104,12 @@ def user_update(id):
         return jsonify({"data": msg, "msg": "更新失败"}), HTTPStatus.BAD_REQUEST
     
 
-@user_bp.route("/delete/user/<string:username>", methods=['POST'])
-def user_delete(username):
+@user_bp.route("/delete/user", methods=['POST'])
+def user_delete():
     '''删除'''
     admin_user = request.json.get("admin_user", "").strip()  # 当前登录的管理员用户
     token = request.json.get("token", "").strip()  # token口令
+    username = request.json.get("username", "").strip()
 
     success, msg = user_event.delete_user(admin_user, token, username)
     if success:

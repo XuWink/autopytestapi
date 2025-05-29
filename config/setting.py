@@ -12,7 +12,7 @@ REDIS_PASSWD = 'xuwenke'
 MAX_CONNECTIONS = 20
 DB_ID = 0
 # token过期时间（秒）
-EXPIRE_TIME = 3600
+EXPIRE_TIME = 36000
 
 # MD5加密盐值
 MD5_SALT = 'hello world!'
